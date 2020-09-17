@@ -3,7 +3,7 @@ import "./App.css";
 import Chat from "./Chat";
 import Sidebar from "./Sidebar";
 
-function App() {
+const App = () => {
   return (
     <div className="app">
       <div className="app__body">
@@ -12,6 +12,6 @@ function App() {
       </div>
     </div>
   );
-}
+};
 
 export default App;
