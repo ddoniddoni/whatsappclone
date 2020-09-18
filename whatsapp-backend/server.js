@@ -4,7 +4,9 @@ import mongoose from "mongoose";
 import Messages from "./dbMessages.js";
 import cors from "cors";
 import Pusher from "pusher";
+import Dotenv from "dotenv";
 
+Dotenv.config();
 // const express = require("express");
 // const cors = require("cors");
 // const mongoose = require("mongoose");
@@ -15,9 +17,9 @@ const app = express();
 const port = process.env.PORT || 9000;
 
 const pusher = new Pusher({
-  appId: "1075287",
-  key: "d1775659e7fbf40cca23",
-  secret: "1934d56246f4d51b8bd2",
+  appId: process.env.PUSHER_ID,
+  key: process.env.PUSHER_KEY,
+  secret: process.env.PUSHER_SECRET,
   cluster: "ap3",
   encrypted: true,
 });
@@ -33,8 +35,7 @@ app.use((req, res, next) => {
 });
 
 // DB config
-const connetcion_url =
-  "mongodb+srv://admin:IXklrpmI7vy3gSnI@cluster0.zzsxd.mongodb.net/whatsappdb?retryWrites=true&w=majority";
+const connetcion_url = process.env.MONGO_URL;
 
 mongoose.connect(connetcion_url, {
   useCreateIndex: true,
@@ -59,6 +60,7 @@ db.once("open", () => {
       pusher.trigger("messages", "inserted", {
         name: messageDetails.name,
         message: messageDetails.message,
+        timestamp: messageDetails.timestamp,
       });
     } else {
       console.log("Error triggering Pusher");
